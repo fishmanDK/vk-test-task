@@ -10,6 +10,16 @@ type FilmsService struct {
 	repo *storage.StorageServ
 }
 
+//go:generate go run github.com/vektra/mockery/v2@v2.20.2 --name=Films
+type Films interface {
+	GetAllFilms(orderBy, q string) (*[]storage.Film, error)
+	SearchFilm(byTitle, byActor string) (*[]storage.Film, error)
+	CreateFilm(newFilm vk_test_task.CreateFilm) error
+	GetFilm(id string) (*storage.Film, error)
+	DeleteFilmById(id string) error
+	ChangeFilm(id string, changedDataFilm vk_test_task.ChangeDataFilm) error
+}
+
 func MustServiceFilms(repo *storage.StorageServ) *FilmsService {
 	return &FilmsService{
 		repo: repo,

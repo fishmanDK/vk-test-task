@@ -6,6 +6,7 @@ import (
 	"vk-test-task/internal/storage"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.20.2 --name=Actors
 type Actors interface {
 	GetAllActors() (*[]storage.Actor, error)
 	GetActorByID(id string) (*storage.Actor, error)

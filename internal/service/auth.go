@@ -8,6 +8,7 @@ import (
 	"vk-test-task/internal/storage"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@v2.20.2 --name=Auth
 type Auth interface {
 	Authentication(user vk_test_task.User) (vk_test_task.Tokens, error)
 	CreateUser(newUser vk_test_task.CreateUser) error

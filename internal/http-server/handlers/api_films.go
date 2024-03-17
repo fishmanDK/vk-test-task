@@ -10,7 +10,6 @@ import (
 	vk_test_task "vk-test-task"
 	"vk-test-task/internal/service"
 	"vk-test-task/internal/service/response"
-	"vk-test-task/internal/storage"
 )
 
 type Film struct {
@@ -18,15 +17,6 @@ type Film struct {
 	Description string    `json:"description"`
 	Date        time.Time `json:"date"`
 	Actors      []Actor   `json:"actors"`
-}
-
-type Films interface {
-	GetAllFilms(orderBy, q string) (*[]storage.Film, error)
-	SearchFilm(byTitle, byActor string) (*[]storage.Film, error)
-	CreateFilm(newFilm vk_test_task.CreateFilm) error
-	GetFilm(id string) (*storage.Film, error)
-	DeleteFilmById(id string) error
-	ChangeFilm(id string, changedDataFilm vk_test_task.ChangeDataFilm) error
 }
 
 func (h *Handlers) getAllFilms(w http.ResponseWriter, r *http.Request) {
@@ -41,6 +31,7 @@ func (h *Handlers) getAllFilms(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "encoding/json")
 
 	films, err := h.service.Films.GetAllFilms(order, q)
+
 	if err != nil {
 		logger.Error(op, slog.String("err", err.Error()))
 		newErrorResponse(w, http.StatusBadRequest, err.Error())
