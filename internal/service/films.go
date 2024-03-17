@@ -6,15 +6,6 @@ import (
 	"vk-test-task/internal/storage"
 )
 
-type Films interface {
-	GetAllFilms(orderBy, q string) (*[]storage.Film, error)
-	SearchFilm(byTitle, byActor string) (*[]storage.Film, error)
-	CreateFilm(newFilm vk_test_task.CreateFilm) error
-	GetFilm(id string) (*storage.Film, error)
-	DeleteFilmById(id string) error
-	ChangeFilm(id string, changedDataFilm vk_test_task.ChangeDataFilm) error
-}
-
 type FilmsService struct {
 	repo *storage.StorageServ
 }
