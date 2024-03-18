@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
+	"github.com/fishmanDK/vk-test-task/internal/service/response"
 	"net/http"
-	"vk-test-task/internal/service/response"
 )
 
 type keyLogger string
@@ -24,4 +24,5 @@ const (
 func newErrorResponse(w http.ResponseWriter, status int, messageErr string) {
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(response.Error(messageErr))
+	return
 }

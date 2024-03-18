@@ -2,10 +2,10 @@ package storage
 
 import (
 	"fmt"
+	"github.com/fishmanDK/vk-test-task/config"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"time"
-	"vk-test-task/internal/configs"
 )
 
 const timeout = 4 * time.Second
@@ -21,7 +21,7 @@ type Storage struct {
 	Storage *sqlx.DB
 }
 
-func ConnectStorage(db_cnf configs.Pgconfig) (*sqlx.DB, error) {
+func ConnectStorage(db_cnf *config.ConfigPostgresDB) (*sqlx.DB, error) {
 	const op = "storage.MustStorage"
 
 	db, err := sqlx.Open("postgres", db_cnf.String())
@@ -36,7 +36,7 @@ func ConnectStorage(db_cnf configs.Pgconfig) (*sqlx.DB, error) {
 	return db, nil
 }
 
-func MustStorage(db_cnf configs.Pgconfig) (*StorageServ, error) {
+func MustStorage(db_cnf *config.ConfigPostgresDB) (*StorageServ, error) {
 	const op = "storage.MustStorageServ"
 
 	db, err := ConnectStorage(db_cnf)

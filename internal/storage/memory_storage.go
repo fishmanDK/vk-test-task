@@ -1,8 +1,8 @@
 package storage
 
 import (
+	vk_test_task "github.com/fishmanDK/vk-test-task"
 	"sync"
-	vk_test_task "vk-test-task"
 )
 
 type MemoryStorage interface {

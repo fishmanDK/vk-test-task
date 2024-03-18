@@ -4,10 +4,10 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/fishmanDK/vk-test-task/internal/storage"
 	"github.com/golang-jwt/jwt"
 	"math/rand"
 	"time"
-	"vk-test-task/internal/storage"
 )
 
 const (
@@ -99,6 +99,5 @@ func (s *AuthService) ParseToken(accessToken string) (*ParseDataUser, error) {
 		Role:  claims.Role,
 	}
 
-	fmt.Println(res)
 	return &res, nil
 }

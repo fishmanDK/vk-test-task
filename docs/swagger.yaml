@@ -1,0 +1,545 @@
+basePath: /
+definitions:
+  response.Response:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  storage.Actor:
+    properties:
+      birthday:
+        type: string
+      films:
+        items:
+          $ref: '#/definitions/storage.Film'
+        type: array
+      firstName:
+        type: string
+      idActor:
+        type: string
+      lastName:
+        type: string
+      sex:
+        type: string
+      surname:
+        type: string
+    type: object
+  storage.Film:
+    properties:
+      actors:
+        items:
+          $ref: '#/definitions/storage.Actor'
+        type: array
+      date:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      rating:
+        type: string
+      title:
+        type: string
+    type: object
+  vk_test_task.ChangeDataActor:
+    properties:
+      birthday:
+        type: string
+      films:
+        items:
+          type: string
+        type: array
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      sex:
+        type: string
+      surname:
+        type: string
+    type: object
+  vk_test_task.ChangeDataFilm:
+    properties:
+      actors:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      rating:
+        type: string
+      release_date:
+        type: string
+      title:
+        type: string
+    type: object
+  vk_test_task.CreateFilm:
+    properties:
+      actors:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      rating:
+        type: string
+      release_date:
+        type: string
+      title:
+        type: string
+    type: object
+  vk_test_task.CreateUser:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+  vk_test_task.NewActor:
+    properties:
+      birthday:
+        type: string
+      films:
+        items:
+          type: string
+        type: array
+      first_name:
+        type: string
+      last_name:
+        type: string
+      sex:
+        type: string
+      surname:
+        type: string
+    type: object
+  vk_test_task.Tokens:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  vk_test_task.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact: {}
+  description: Api Server for VK-test Application
+  title: VK-test-task-API
+  version: "1.0"
+paths:
+  /actors:
+    get:
+      consumes:
+      - application/json
+      description: Getting a list of actors with all its films.
+      operationId: get-all-actors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            items:
+              $ref: '#/definitions/storage.Actor'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: GetAllActors
+      tags:
+      - actors
+  /actors/:
+    post:
+      consumes:
+      - application/json
+      description: Create new actor. All fields are required except Films and Surname.
+      operationId: create-actor
+      parameters:
+      - description: new actor
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/vk_test_task.NewActor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            items:
+              $ref: '#/definitions/response.Response'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: CreateActor
+      tags:
+      - actors
+  /actors/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete actor by id.
+      operationId: delete-actor
+      parameters:
+      - description: Actor ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            items:
+              $ref: '#/definitions/response.Response'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteActor
+      tags:
+      - actors
+    get:
+      consumes:
+      - application/json
+      description: Get actor by id.
+      operationId: get-actor-by-id
+      parameters:
+      - description: Actor ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            items:
+              $ref: '#/definitions/storage.Film'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: GetActorById
+      tags:
+      - actors
+    patch:
+      consumes:
+      - application/json
+      description: Change actor by id.<br /> Date format <yyyy-mm-dd>;<br />The films
+        field must contain film IDs. If you want to remove information about a specific
+        film, then put "-" in front of his ID <"-id">
+      operationId: change-actor
+      parameters:
+      - description: Actor ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: new data actor
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/vk_test_task.ChangeDataActor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            items:
+              $ref: '#/definitions/response.Response'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: ChangeActor
+      tags:
+      - actors
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password
+      operationId: login
+      parameters:
+      - description: User credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/vk_test_task.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            $ref: '#/definitions/vk_test_task.Tokens'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: SignIn
+      tags:
+      - auth
+  /auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: Сreate account. The field "role" must have one of two values (ordinary,
+        row)
+      operationId: create-account
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/vk_test_task.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: SignUp
+      tags:
+      - auth
+  /films:
+    get:
+      consumes:
+      - application/json
+      description: Getting a list of movies with all its actors.<br />The list of
+        films can be sorted using the following fields:<br />----order - can take
+        values "rating", "name", "date";<br /> ----q - can take values "asc", "desc";<br
+        /> By default the list is sorted by rating in descending order.
+      operationId: get-all-films
+      parameters:
+      - description: name search by byTitle
+        in: query
+        name: order
+        type: string
+      - description: name search by byActor
+        in: query
+        name: q
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            items:
+              $ref: '#/definitions/storage.Film'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: GetAllFilms
+      tags:
+      - films
+  /films/:
+    get:
+      consumes:
+      - application/json
+      description: Search Film(s) by title or actor(first_name)
+      operationId: search-film
+      parameters:
+      - description: name search by byTitle
+        format: email
+        in: query
+        name: byTitle
+        type: string
+      - description: name search by byActor
+        in: query
+        name: byActor
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            items:
+              $ref: '#/definitions/storage.Film'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: SearchFilm
+      tags:
+      - films
+    post:
+      consumes:
+      - application/json
+      description: Create new film.<br />1 <= len(title) >= 150; 0 <= len(description)
+        >= 1000; 0 <= rating >= 10; date format <yyyy-mm-dd>;<br />The actors field
+        must contain actor IDs.
+      operationId: search-film
+      parameters:
+      - description: new film
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/vk_test_task.CreateFilm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: CreateFilm
+      tags:
+      - films
+  /films/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete film by id.
+      operationId: delete-film
+      parameters:
+      - description: Film ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteFilm
+      tags:
+      - films
+    get:
+      consumes:
+      - application/json
+      description: Get film by id
+      operationId: get-film-by-id
+      parameters:
+      - description: Film ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            $ref: '#/definitions/storage.Film'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: GetFilmByID
+      tags:
+      - films
+    patch:
+      consumes:
+      - application/json
+      description: Change film by id.<br />1 <= len(title) >= 150; 0 <= len(description)
+        >= 1000; 0 <= rating >= 10; date format <yyyy-mm-dd>;<br />The actors field
+        must contain actor IDs. If you want to remove information about a specific
+        actor, then put - in front of his ID <"-id">
+      operationId: change-film
+      parameters:
+      - description: new data film
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/vk_test_task.ChangeDataFilm'
+      - description: Film ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: ChangeFilm
+      tags:
+      - films
+securityDefinitions:
+  ApiKeyAuth:
+    description: Enter your bearer token in the format Bearer <token>
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

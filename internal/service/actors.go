@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
-	vk_test_task "vk-test-task"
-	"vk-test-task/internal/storage"
+	vk_test_task "github.com/fishmanDK/vk-test-task"
+	"github.com/fishmanDK/vk-test-task/internal/storage"
 )
 
 //go:generate go run github.com/vektra/mockery/v2@v2.20.2 --name=Actors

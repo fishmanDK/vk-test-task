@@ -2,15 +2,24 @@ package handlers
 
 import (
 	"encoding/json"
+	vk_test_task "github.com/fishmanDK/vk-test-task"
+	"github.com/fishmanDK/vk-test-task/internal/service/response"
 	"log/slog"
 	"net/http"
-	vk_test_task "vk-test-task"
-	"vk-test-task/internal/service/response"
 )
 
+// @Summary SignIn
+// @Tags auth
+// @Description Login with email and password
+// @ID login
+// @Accept  json
+// @Produce  json
+// @Param input body vk_test_task.User true "User credentials"
+// @Success 200 {object} vk_test_task.Tokens "Success response"
+// @Failure 400 {object} response.Response "Bad Request"
+// @Router /auth/sign-in [post]
 func (h *Handlers) signIn(w http.ResponseWriter, r *http.Request) {
 	const op = "handlers.signIn"
-
 	logger := r.Context().Value(loggerKey).(*slog.Logger)
 
 	var input vk_test_task.User
@@ -33,6 +42,16 @@ func (h *Handlers) signIn(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tokens)
 }
 
+// @Summary SignUp
+// @Tags auth
+// @Description Сreate account. The field "role" must have one of two values (ordinary, admin)
+// @ID create-account
+// @Accept  json
+// @Produce  json
+// @Param input body vk_test_task.CreateUser true "account info"
+// @Success 200 {object} response.Response "Success response"
+// @Failure 400 {object} response.Response "Bad Request"
+// @Router /auth/sign-up [post]
 func (h *Handlers) signUp(w http.ResponseWriter, r *http.Request) {
 	const op = "handlers.signUp"
 

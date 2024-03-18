@@ -4,9 +4,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	vk_test_task "github.com/fishmanDK/vk-test-task"
 	"github.com/jmoiron/sqlx"
 	"strconv"
-	vk_test_task "vk-test-task"
+	"time"
 )
 
 const (
@@ -101,15 +102,15 @@ func (f *FilmsStorage) GetAllFilms(orderBy, q string) (*[]Film, error) {
 			return nil, fmt.Errorf("%s: %w", op, err)
 		}
 
-		//err = film.formatDate()
-		//if err != nil {
-		//	return nil, fmt.Errorf("%s: %w", op, err)
-		//}
+		err = film.formatDate()
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", op, err)
+		}
 
-		//err = actor.formatBirth()
-		//if err != nil {
-		//	return nil, fmt.Errorf("%s: %w", op, err)
-		//}
+		err = actor.formatBirth()
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", op, err)
+		}
 
 		if last_film.equals(film) {
 			films[len(films)-1].Actors = append(films[len(films)-1].Actors, actor)
@@ -133,7 +134,7 @@ func (f *FilmsStorage) GetAllFilms(orderBy, q string) (*[]Film, error) {
 func (f *FilmsStorage) SearchFilm(byTitle, byActor string) (*[]Film, error) {
 	const op = "storage.SearchFilm"
 
-	query := "SELECT films.id, films.title, films.description, films.release_date, films.rating, actors.first_name, actors.last_name, actors.surname, actors.birthday, actors.sex FROM films_actors JOIN films ON films_actors.film_id = films.id JOIN actors ON films_actors.actor_id = actors.id WHERE films.title LIKE '%' || $1 || '%' AND actors.first_name LIKE '%' || $2 || '%';"
+	query := "SELECT films.id, films.title, films.description, films.release_date, films.rating, actors.id, actors.first_name, actors.last_name, actors.surname, actors.birthday, actors.sex FROM films_actors JOIN films ON films_actors.film_id = films.id JOIN actors ON films_actors.actor_id = actors.id WHERE films.title LIKE '%' || $1 || '%' AND actors.first_name LIKE '%' || $2 || '%';"
 
 	tx, err := f.db.Begin()
 	defer tx.Rollback()
@@ -151,20 +152,20 @@ func (f *FilmsStorage) SearchFilm(byTitle, byActor string) (*[]Film, error) {
 	for rows.Next() {
 		film := Film{}
 		actor := Actor{}
-		err := rows.Scan(&film.ID, &film.Title, &film.Description, &film.Date, &film.Rating, &actor.FirstName, &actor.LastName, &actor.Surname, &actor.Birthday, &actor.Sex)
+		err := rows.Scan(&film.ID, &film.Title, &film.Description, &film.Date, &film.Rating, &actor.IdActor, &actor.FirstName, &actor.LastName, &actor.Surname, &actor.Birthday, &actor.Sex)
 		if err != nil {
 			return nil, fmt.Errorf("%s: %w", op, err)
 		}
 
-		//err = film.formatDate()
-		//if err != nil {
-		//	return nil, fmt.Errorf("%s: %w", op, err)
-		//}
+		err = film.formatDate()
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", op, err)
+		}
 
-		//err = actor.formatBirth()
-		//if err != nil {
-		//	return nil, fmt.Errorf("%s: %w", op, err)
-		//}
+		err = actor.formatBirth()
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", op, err)
+		}
 
 		if last_film.equals(film) {
 			films[len(films)-1].Actors = append(films[len(films)-1].Actors, actor)
@@ -245,15 +246,15 @@ func (f *FilmsStorage) GetFilm(id string) (*Film, error) {
 			return nil, fmt.Errorf("%s: %w", op, err)
 		}
 
-		//err = film.formatDate()
-		//if err != nil {
-		//	return nil, fmt.Errorf("%s: %w", op, err)
-		//}
+		err = film.formatDate()
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", op, err)
+		}
 
-		//err = actor.formatBirth()
-		//if err != nil {
-		//	return nil, fmt.Errorf("%s: %w", op, err)
-		//}
+		err = actor.formatBirth()
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", op, err)
+		}
 
 		film.Actors = append(film.Actors, actor)
 	}
@@ -360,16 +361,16 @@ func (f *FilmsStorage) ChangeFilm(id string, changedDataFilm vk_test_task.Change
 	return nil
 }
 
-//func (f *Film) formatDate() error {
-//	const op = "storage.formatDate"
-//
-//	date, err := time.Parse("2006-01-02", f.Date)
-//	if err != nil {
-//		return fmt.Errorf("%s: %w", op, err)
-//	}
-//	f.Date = date.Format("2006-01-02")
-//	return nil
-//}
+func (f *Film) formatDate() error {
+	const op = "storage.formatDate"
+
+	date, err := time.Parse("2006-01-02T15:04:05Z07:00", f.Date)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	f.Date = date.Format("2006-01-02")
+	return nil
+}
 
 func (f Film) equals(other Film) bool {
 	return f.ID == other.ID && f.Title == other.Title && f.Description == other.Description && f.Date == other.Date && f.Rating == other.Rating

@@ -1,9 +1,12 @@
 package handlers
 
 import (
+	"github.com/fishmanDK/vk-test-task/internal/service"
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log/slog"
-	"vk-test-task/internal/service"
+
+	_ "github.com/fishmanDK/vk-test-task/docs"
 )
 
 type Handlers struct {
@@ -20,14 +23,16 @@ func (h *Handlers) InitRouts(logger *slog.Logger) *mux.Router {
 	r := mux.NewRouter()
 	r.Use(h.loggerMiddleware(logger))
 
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+
 	authRouter := r.PathPrefix("/auth").Subrouter()
 	{
-		authRouter.HandleFunc("/signIn", h.signIn).Methods("POST")
-		authRouter.HandleFunc("/signUp", h.signUp).Methods("POST")
+		authRouter.HandleFunc("/sign-in", h.signIn).Methods("POST")
+		authRouter.HandleFunc("/sign-up", h.signUp).Methods("POST")
 	}
 
 	filmsRouter := r.PathPrefix("/films").Subrouter()
-	filmsRouter.Use(h.authMiddleware)
+	filmsRouter.Use(h.authMiddleware(logger))
 	{
 		filmsRouter.HandleFunc("", h.getAllFilms).Methods("GET")
 
@@ -43,7 +48,7 @@ func (h *Handlers) InitRouts(logger *slog.Logger) *mux.Router {
 	}
 
 	actorsRouter := r.PathPrefix("/actors").Subrouter()
-	actorsRouter.Use(h.authMiddleware)
+	actorsRouter.Use(h.authMiddleware(logger))
 	{
 		actorsRouter.HandleFunc("", h.getAllActors).Methods("Get")
 

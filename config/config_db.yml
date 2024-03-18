@@ -1,0 +1,7 @@
+postgres_db:
+  pg_user: "postgres"
+  pg_database: "postgres"
+  pg_host: "localhost"
+  pg_port: "5436"
+  pg_sslmode: "disable"
+  pg_password: "qwerty"

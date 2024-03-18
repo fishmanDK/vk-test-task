@@ -2,8 +2,8 @@ package storage
 
 import (
 	"fmt"
+	vk_test_task "github.com/fishmanDK/vk-test-task"
 	"github.com/jmoiron/sqlx"
-	vk_test_task "vk-test-task"
 )
 
 type Auth interface {
@@ -51,7 +51,6 @@ func (a *AuthDb) CreateUser(newUser vk_test_task.CreateUser) error {
 	}
 	defer tx.Rollback()
 
-	fmt.Println(newUser.Email, newUser.Password, newUser.Role)
 	_, err = tx.Exec(query, newUser.Email, newUser.Password, newUser.Role)
 
 	if err != nil {

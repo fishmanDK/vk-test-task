@@ -3,10 +3,10 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+	vk_test_task "github.com/fishmanDK/vk-test-task"
 	"github.com/jmoiron/sqlx"
 	"strconv"
 	"time"
-	vk_test_task "vk-test-task"
 )
 
 type Actors interface {
@@ -193,7 +193,7 @@ func (a *ActorsStorage) CreateActor(newActor vk_test_task.NewActor) error {
 	defer tx.Rollback()
 
 	var newIdActor int
-	err = tx.QueryRow(query, newActor.FirstName, newActor.LatName, newActor.Surname, newActor.Sex, newActor.Birthday).Scan(&newIdActor)
+	err = tx.QueryRow(query, newActor.FirstName, newActor.LastName, newActor.Surname, newActor.Sex, newActor.Birthday).Scan(&newIdActor)
 
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
@@ -202,7 +202,7 @@ func (a *ActorsStorage) CreateActor(newActor vk_test_task.NewActor) error {
 	for _, idFilm := range newActor.Films {
 		nn, _ := strconv.Atoi(idFilm)
 		query := "INSERT INTO films_actors (film_id, actor_id) VALUES ($1, $2)"
-		_, err := tx.Exec(query, newIdActor, nn)
+		_, err := tx.Exec(query, nn, newIdActor)
 		if err != nil {
 			return fmt.Errorf("%s: %w", op, err)
 		}
@@ -317,7 +317,7 @@ func (a *ActorsStorage) DeleteActor(idActor string) error {
 func (a *Actor) formatBirth() error {
 	const op = "storage.formatBirth"
 
-	birth, err := time.Parse("2006-01-02", a.Birthday)
+	birth, err := time.Parse("2006-01-02T15:04:05Z07:00", a.Birthday)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}

@@ -1,7 +1,7 @@
 package service
 
 import (
-	"vk-test-task/internal/storage"
+	"github.com/fishmanDK/vk-test-task/internal/storage"
 )
 
 type Service struct {
