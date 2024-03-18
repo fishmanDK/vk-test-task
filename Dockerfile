@@ -14,4 +14,6 @@ FROM alpine AS runner
 
 COPY --from=builder /usr/local/src/bin/app /
 
+RUN source .env
+
 CMD ["/app"]

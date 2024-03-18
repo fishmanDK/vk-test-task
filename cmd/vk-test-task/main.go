@@ -38,18 +38,20 @@ func main() {
 
 	db, err := storage.MustStorage(pg_cfg)
 	if err != nil {
-		logger.Info(err.Error())
-		panic(err.Error())
+		logger.Error(err.Error())
+		return
 	}
 
 	srvc, err := service.MustService(db)
 	if err != nil {
-		panic(err.Error())
+		logger.Error(err.Error())
+		return
 	}
 
 	handl, err := handlers.MustHandlers(srvc)
 	if err != nil {
-		panic(err.Error())
+		logger.Error(err.Error())
+		return
 	}
 
 	router := handl.InitRouts(logger)
