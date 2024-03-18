@@ -8,14 +8,14 @@ services:
       - "8080:8080"
     environment:
       - ENV_VAR_NAME=value
-      - DATABASE_URL=postgres://postgres:postgres@db/postgres?sslmode=disable
-    volumes:
-      - .:/app
+      - DATABASE_URL=postgres://postgres:postgres@postgres/postgres?sslmode=disable
+#    volumes:
+#      - .:app
     command: ["./cmd/vk-test-task"]
     depends_on:
       - db
 
-  db:
+  postgres:
     image: postgres:16
     restart: always
     ports:
