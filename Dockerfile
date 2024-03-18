@@ -4,10 +4,8 @@ WORKDIR /usr/local/src
 
 RUN apk --no-cache add bash git make gcc gettext musl-dev
 
-# Замените apt-get на apk
 RUN apk update && apk add postgresql-client
 
-# Сделать wait-for-postgres.sh исполняемым
 COPY wait-for-postgres.sh /usr/local/src/wait-for-postgres.sh
 RUN chmod +x wait-for-postgres.sh
 
