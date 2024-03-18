@@ -1,27 +1,48 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  app:
+  vk-test-task:
     build: .
+    image: vk-test-task:latest
     ports:
       - "8080:8080"
-    depends_on:
-      - postgres
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/mydatabase?sslmode=disable
+      - ENV_VAR_NAME=value
+      - DATABASE_URL=postgres://postgres:postgres@db/postgres?sslmode=disable
+    volumes:
+      - .:/app
+    command: ["./cmd/vk-test-task"]
+    depends_on:
+      - db
 
-  postgres:
-    image: postgres:latest
+  db:
+    image: postgres:16
     restart: always
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./schema:/docker-entrypoint-initdb.d
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: mydatabase
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ./migrations:/migrations
+    command: [
+      "-path=/migrations",
+      "-database=postgres://postgres:postgres@db/postgres?sslmode=disable",
+      "up"
+    ]
+    depends_on:
+      - db
 
 volumes:
   postgres_data:
