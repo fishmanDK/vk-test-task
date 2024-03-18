@@ -15,7 +15,23 @@ services:
     image: postgres:latest
     volumes:
       - ./.database/postgres/data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+      - ./entrypoint.sh:/docker-entrypoint-initdb.d/entrypoint.sh
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_DB=postgres
     ports:
       - 5432:5432
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - .:/schema
+    command:
+      [ "-path", "./schema", "-database", "postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable", "up" ]
+    depends_on:
+      - db
+
+volumes:
+  db_data:
