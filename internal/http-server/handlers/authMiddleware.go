@@ -39,11 +39,6 @@ func (h *Handlers) authMiddleware(logger *slog.Logger) func(next http.Handler) h
 				return
 			}
 
-			//if pDataUser == nil {
-			//	logger.Info(op, slog.String("refusal", "registered user login attempt"))
-			//	newErrorResponse(w, http.StatusForbidden, "registered user login attempt")
-			//}
-
 			ctx := context.WithValue(r.Context(), parseDataUser, pDataUser)
 			r = r.WithContext(ctx)
 			next.ServeHTTP(w, r)

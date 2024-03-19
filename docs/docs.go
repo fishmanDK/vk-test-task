@@ -291,7 +291,7 @@ const docTemplate = `{
         },
         "/auth/sign-up": {
             "post": {
-                "description": "Сreate account. The field \"role\" must have one of two values (ordinary, row)",
+                "description": "Сreate account. The field \"role\" must have one of two values (ordinary, admin)",
                 "consumes": [
                     "application/json"
                 ],
@@ -835,7 +835,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8081",
+	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "VK-test-task-API",

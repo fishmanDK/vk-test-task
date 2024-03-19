@@ -24,7 +24,7 @@ const (
 // @version 1.0
 // @description Api Server for VK-test Application
 
-// @host localhost:8081
+// @host localhost:8080
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth

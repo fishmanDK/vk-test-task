@@ -6,12 +6,6 @@ import (
 	"net/http"
 )
 
-//func (h *Handlers) loggerMiddleware(next http.Handler) http.Handler {
-//	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-//
-//	})
-//}
-
 func (h *Handlers) loggerMiddleware(logger *slog.Logger) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

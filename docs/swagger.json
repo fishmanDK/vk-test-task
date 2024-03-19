@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8081",
+    "host": "localhost:8080",
     "basePath": "/",
     "paths": {
         "/actors": {
@@ -285,7 +285,7 @@
         },
         "/auth/sign-up": {
             "post": {
-                "description": "Сreate account. The field \"role\" must have one of two values (ordinary, row)",
+                "description": "Сreate account. The field \"role\" must have one of two values (ordinary, admin)",
                 "consumes": [
                     "application/json"
                 ],

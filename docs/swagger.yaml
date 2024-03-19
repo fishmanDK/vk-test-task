@@ -132,7 +132,7 @@ definitions:
       password:
         type: string
     type: object
-host: localhost:8081
+host: localhost:8080
 info:
   contact: {}
   description: Api Server for VK-test Application
@@ -322,7 +322,7 @@ paths:
       consumes:
       - application/json
       description: Сreate account. The field "role" must have one of two values (ordinary,
-        row)
+        admin)
       operationId: create-account
       parameters:
       - description: account info

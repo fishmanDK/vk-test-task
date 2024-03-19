@@ -39,12 +39,3 @@ CREATE TABLE IF NOT EXISTS films_actors (
     FOREIGN KEY (film_id) REFERENCES films(id),
     FOREIGN KEY (actor_id) REFERENCES actors(id)
 );
-
-CREATE TABLE IF NOT EXISTS tokens
-(
-    user_id int NOT NULL,
-    access_token VARCHAR(255),
-    refresh_token VARCHAR(255),
-
-    FOREIGN KEY (user_id) REFERENCES users(id)
-)
