@@ -1,5 +1,6 @@
 
-![logo](logo.png)
+<img width="1838" alt="Снимок экрана 2024-03-19 в 02 32 06" src="https://github.com/fishmanDK/vk-test-task/assets/119760881/d5529c65-4636-4b07-98c6-4232ea8c987b">
+
 # vk-test-task
 
 Этот репозиторий содержит проект `vk-test-task`, который является бэкенд приложение "Фильмотека". Проект написан на языке Go и использует PostgreSQL в качестве базы данных.
@@ -47,7 +48,7 @@
 Это запустит приложение вместе с PostgreSQL в контейнерах. Если оно не запустилось, то попробуйте выполнить команду еще раз.  [Подробнее об этом](https://docs.docker.com/compose/startup-order/)
 
 ## База данных
-![bd](bd.png)
+<img width="1576" alt="Снимок экрана 2024-03-19 в 02 34 01" src="https://github.com/fishmanDK/vk-test-task/assets/119760881/a66ea07b-f62b-433b-b6f1-439ac5aa1630">
 
 Проект `vk-test-task` использует PostgreSQL в качестве системы управления базами данных (СУБД).
 
