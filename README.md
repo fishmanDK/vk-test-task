@@ -1,4 +1,3 @@
-
 <img width="1838" alt="Снимок экрана 2024-03-19 в 02 32 06" src="https://github.com/fishmanDK/vk-test-task/assets/119760881/d5529c65-4636-4b07-98c6-4232ea8c987b">
 
 # vk-test-task
