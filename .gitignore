@@ -1,7 +1,4 @@
 .env
 .idea
-.database
-logo.png
-bd.png
 wait-for-postgres.sh
-.database/postgres
+.database/postgres/data
