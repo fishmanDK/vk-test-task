@@ -4,3 +4,4 @@
 logo.png
 bd.png
 wait-for-postgres.sh
+.database/postgres
