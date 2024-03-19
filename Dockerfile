@@ -7,7 +7,6 @@ RUN apk --no-cache add bash git make gcc gettext musl-dev
 RUN apk update && apk add postgresql-client
 
 COPY wait-for-postgres.sh /usr/local/src/wait-for-postgres.sh
-RUN chmod +x wait-for-postgres.sh
 
 COPY ["go.mod", "go.sum", "./"]
 RUN go mod download
